@@ -1,0 +1,23 @@
+.container {
+    height: 100%;
+    padding: 20px;
+
+    .rate-container, .sources-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .rate-container {
+        height: 30%;
+    }
+
+    .rubles {
+        font-size: 70px;
+        padding-left: 40px;
+    }
+}
+
+app-sources {
+    width: 100%;
+}

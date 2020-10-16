@@ -1,0 +1,22 @@
+<div class="sources">
+    <div cdkDropList class="list" (cdkDropListDropped)="drop($event)">
+        <div class="list-box row" *ngFor="let s of sources" cdkDrag>
+            <div class="source-row">
+                <span class="url">{{s.url}}</span>
+                <div class="value">
+                    <span class="euro">1&#8364; &#8776;</span>
+                    <span class="ruble">{{s.value | sum}} &#8381;</span>
+                </div>
+                <span class="error">{{s.errorMessage}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row source-row">
+        <mat-form-field appearance="legacy">
+            <input matInput placeholder="url" [(ngModel)]="newUrl">
+        </mat-form-field>
+    </div>
+    <div class="row source-row add-btn">
+        <button mat-button (click)="addSource()">Добавить</button>
+    </div>
+</div>

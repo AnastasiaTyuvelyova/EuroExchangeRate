@@ -1,6 +1,6 @@
 # MaxibookingTest
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.6.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.6. The project displays ruble-euro ratio with every 10 seconds update.
 
 ## Development server
 

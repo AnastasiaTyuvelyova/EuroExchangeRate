@@ -34,7 +34,8 @@ export class RateService {
     private setCallStack(sources: Array<SourceModel>) {
         this.callStack = new Array<Promise<any>>();
 
-        let ordered = sources.sort((a, b) => (a.order > b.order) ? 1 : -1);
+        let ordered = [...sources];
+        ordered.sort((a, b) => (a.order > b.order) ? 1 : -1);
         ordered.forEach(s => {
             this.callStack.push(this.getRateData(s.url, s.order));
         });

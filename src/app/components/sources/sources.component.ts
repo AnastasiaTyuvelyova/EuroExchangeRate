@@ -15,7 +15,7 @@ export class SourcesComponent {
 
     async ngOnInit() {
         this.sources.push(new SourceModel('https://www.cbr-xml-daily.ru/daily_utf8.xml', 0));
-        this.sources.push(new SourceModel('https://www.cbr-xml-daily.ru/daily_json.js', 1));
+        this.sources.push(new SourceModel('https://www.cbr-xml-daily.ru/daily_json.js', this.sources.length));
 
         this.updateRate();
         setInterval(this.updateRate, 10000);
@@ -30,17 +30,37 @@ export class SourcesComponent {
             x.value = result ? result.value : 0;
             x.errorMessage = result ? result.errorMessage : null;
         });
-        console.log('обновился!');
     }
 
     addSource() {
         if (!this.newUrl) return;
-        this.sources.push(new SourceModel(this.newUrl, this.sources.length));
-        this.newUrl = '';
+
+        let model = new SourceModel();
+
+        if (!this.urlIsValid(this.newUrl)) {
+            model.errorMessage = 'Некорректный адрес';
+        }
+
+        model.url = this.newUrl;
+        model.order = this.sources.length
+        this.sources.push(model);
+        this.newUrl = null;
     }
 
-    drop(event: CdkDragDrop<string[]>) {
+    dropped(event: CdkDragDrop<SourceModel[]>) {
         moveItemInArray(this.sources, event.previousIndex, event.currentIndex);
+        this.changeOrder();
     }
 
+    urlIsValid(url: string) {
+        if (!url) return false;
+        const reg = '(https|http?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+        return url.match(reg);
+    }
+
+    private changeOrder() {
+        for (let i = 0; i < this.sources.length; i++) {
+            this.sources[i].order = i;
+        }
+    }
 }

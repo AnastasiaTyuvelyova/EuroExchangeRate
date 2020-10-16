@@ -14,7 +14,7 @@ mat-form-field {
 }
 
 .url {
-    flex-basis: 60%;
+    flex-basis: 50%;
 }
 
 .value {
@@ -22,7 +22,7 @@ mat-form-field {
 }
 
 .error {
-    flex-basis: 20%;
+    flex-basis: 30%;
 }
 
 .euro {
@@ -53,7 +53,6 @@ mat-form-field {
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    cursor: move;
     background: white;
     font-size: 14px;
   }
@@ -80,4 +79,11 @@ mat-form-field {
   
   .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+.drag-handle {
+    color: #ccc;
+    cursor: move;
+    width: 20px;
+    height: 20px;
   }

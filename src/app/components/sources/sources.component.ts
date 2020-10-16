@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SourceModel } from 'src/app/models/source.model';
 import { RateService } from 'src/app/services/rate.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -8,17 +8,18 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
     templateUrl: 'sources.component.html',
     styleUrls: ['sources.component.scss']
 })
-export class SourcesComponent {
+export class SourcesComponent implements OnInit, OnDestroy {
 
     sources = new Array<SourceModel>();
     newUrl = '';
+    interval: any;
 
     async ngOnInit() {
         this.sources.push(new SourceModel('https://www.cbr-xml-daily.ru/daily_utf8.xml', 0));
         this.sources.push(new SourceModel('https://www.cbr-xml-daily.ru/daily_json.js', this.sources.length));
 
         this.updateRate();
-        setInterval(this.updateRate, 10000);
+        this.interval = setInterval(this.updateRate, 10000);
     }
 
     constructor(private rateService: RateService) {}
@@ -26,9 +27,8 @@ export class SourcesComponent {
     updateRate = async () => {
         let results = await this.rateService.updateRate(this.sources);
         this.sources.forEach(x => {
-            let result = results.find(v => v.order === x.order);
-            x.value = result ? result.value : 0;
-            x.errorMessage = result ? result.errorMessage : null;
+            let result = results.find(n => n.order === x.order);
+            x.mapAfterRequest(result);
         });
     }
 
@@ -39,6 +39,7 @@ export class SourcesComponent {
 
         if (!this.urlIsValid(this.newUrl)) {
             model.errorMessage = 'Некорректный адрес';
+            model.isInvalid = true;
         }
 
         model.url = this.newUrl;
@@ -62,5 +63,9 @@ export class SourcesComponent {
         for (let i = 0; i < this.sources.length; i++) {
             this.sources[i].order = i;
         }
+    }
+
+    ngOnDestroy() {
+        clearInterval(this.interval);
     }
 }
